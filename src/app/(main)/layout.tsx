@@ -1,11 +1,22 @@
+
+"use client"; 
 import { AppHeader } from '@/components/common/AppHeader';
 import { AppFooter } from '@/components/common/AppFooter';
+import { usePathname } from 'next/navigation';
 
 export default function MainAppLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
+  if (pathname === '/chat') {
+    // For the chat page, render children directly to allow full viewport control
+    return <div className="h-screen flex flex-col">{children}</div>;
+  }
+
+  // Standard layout for other pages
   return (
     <div className="flex flex-col min-h-screen">
       <AppHeader variant="app" />

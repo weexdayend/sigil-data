@@ -1,8 +1,9 @@
+
 "use client";
 
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Logo } from '@/components/common/Logo';
 import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
@@ -19,7 +20,22 @@ type AppHeaderProps = {
 
 export function AppHeader({ variant = 'landing' }: AppHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentHash, setCurrentHash] = useState<string>('');
   const pathname = usePathname();
+
+  useEffect(() => {
+    // Set initial hash
+    setCurrentHash(window.location.hash);
+
+    const handleHashChange = () => {
+      setCurrentHash(window.location.hash);
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
 
   const landingLinks: NavLink[] = [
     { href: '/#features', label: 'Features' },
@@ -35,18 +51,20 @@ export function AppHeader({ variant = 'landing' }: AppHeaderProps) {
   const links = variant === 'landing' ? landingLinks : appLinks;
 
   const getLinkClass = (href: string) => {
+    const isHashLinkActive = href.startsWith('/#') && pathname === '/' && currentHash === href.substring(1);
     return cn(
       "text-sm font-medium transition-colors hover:text-primary px-3 py-2 rounded-md",
-      pathname === href || (href.startsWith('/#') && pathname === '/' && window.location.hash === href.substring(1))
+      (pathname === href && !href.startsWith('/#')) || isHashLinkActive
         ? "text-primary bg-primary/10" 
         : "text-muted-foreground"
     );
   };
   
   const getMobileLinkClass = (href: string) => {
+    const isHashLinkActive = href.startsWith('/#') && pathname === '/' && currentHash === href.substring(1);
     return cn(
       "block px-3 py-2 rounded-md text-base font-medium transition-colors hover:text-primary hover:bg-primary/5",
-      pathname === href || (href.startsWith('/#') && pathname === '/' && window.location.hash === href.substring(1))
+      (pathname === href && !href.startsWith('/#')) || isHashLinkActive
         ? "text-primary bg-primary/10"
         : "text-foreground"
     );
