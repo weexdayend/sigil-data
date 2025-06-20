@@ -8,10 +8,19 @@ export default {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    container: { // Added for easier centering with padding
+      center: true,
+      padding: {
+        DEFAULT: '1rem',
+        sm: '2rem',
+        lg: '4rem',
+        xl: '5rem',
+      },
+    },
     extend: {
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
+        body: ['Inter', 'system-ui', 'sans-serif'],
+        headline: ['Inter', 'system-ui', 'sans-serif'], // Keep consistent or choose a distinct headline font
         code: ['monospace'],
       },
       colors: {
@@ -67,9 +76,9 @@ export default {
         },
       },
       borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        lg: 'var(--radius)', // e.g., 0.75rem
+        md: 'calc(var(--radius) - 0.25rem)', // e.g., 0.5rem
+        sm: 'calc(var(--radius) - 0.375rem)', // e.g., 0.375rem
       },
       keyframes: {
         'accordion-down': {
@@ -88,12 +97,39 @@ export default {
             height: '0',
           },
         },
+        'blob': { /* For DynamicBackground if needed */
+          '0%': { transform: 'scale(1) translate(0px, 0px)' },
+          '33%': { transform: 'scale(1.1) translate(30px, -20px)' },
+          '66%': { transform: 'scale(0.9) translate(-20px, 30px)' },
+          '100%': { transform: 'scale(1) translate(0px, 0px)' },
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'blob': 'blob 7s infinite alternate',
       },
+      boxShadow: { // Adding some more modern shadow options
+        'soft': '0 4px 12px hsla(var(--primary)/0.05), 0 2px 6px hsla(var(--primary)/0.08)',
+        'medium': '0 8px 16px hsla(var(--primary)/0.07), 0 4px 8px hsla(var(--primary)/0.1)',
+        'hard': '0 12px 24px hsla(var(--primary)/0.1), 0 6px 12px hsla(var(--primary)/0.12)',
+      },
+      typography: (theme: (arg0: string) => any) => ({ // For potential future prose styling
+        DEFAULT: {
+          css: {
+            color: theme('colors.foreground'),
+            a: {
+              color: theme('colors.primary.DEFAULT'),
+              '&:hover': {
+                color: theme('colors.primary.DEFAULT'),
+                opacity: 0.8,
+              },
+            },
+            // ... more prose styles
+          },
+        },
+      }),
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
 } satisfies Config;

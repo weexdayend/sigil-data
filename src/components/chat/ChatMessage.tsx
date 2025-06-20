@@ -23,7 +23,7 @@ export function ChatMessage({ message, onSuggestionClick }: ChatMessageProps) {
   const handleCopy = () => {
     navigator.clipboard.writeText(message.content);
     setCopied(true);
-    toast({ title: "Copied to clipboard!" });
+    toast({ title: "Copied to clipboard!", duration: 2000 });
     setTimeout(() => setCopied(false), 2000);
   };
   
@@ -31,27 +31,27 @@ export function ChatMessage({ message, onSuggestionClick }: ChatMessageProps) {
   const IconComponent = isUser ? User : Bot;
 
   return (
-    <div className={`flex items-start space-x-3 group ${isUser ? 'justify-end' : ''}`}>
+    <div className={`flex items-start space-x-3.5 group ${isUser ? 'justify-end' : ''}`}>
       {!isUser && (
-        <span className="flex-shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted text-muted-foreground">
-          <IconComponent size={20} />
+        <span className="flex-shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-full bg-secondary text-secondary-foreground shadow-sm">
+          <IconComponent size={22} />
         </span>
       )}
-      <div className={`relative p-3 rounded-xl shadow max-w-[70%] ${
+      <div className={`relative p-3.5 rounded-2xl shadow-md max-w-[75%] sm:max-w-[70%] ${
           isUser
-            ? 'bg-primary text-primary-foreground rounded-br-none'
-            : 'bg-secondary text-secondary-foreground rounded-bl-none'
+            ? 'bg-primary text-primary-foreground rounded-br-lg'
+            : 'bg-card text-card-foreground rounded-bl-lg border border-border' // Added border for assistant
         }`}
       >
-        <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+        <p className="text-sm whitespace-pre-wrap leading-relaxed">{message.content}</p>
         {message.suggestions && onSuggestionClick && (
-          <div className="mt-3 space-y-2">
+          <div className="mt-3.5 space-x-2 space-y-2 flex flex-wrap"> {/* Flex wrap for suggestions */}
             {message.suggestions.map((suggestion, index) => (
               <Button
                 key={index}
                 variant="outline"
                 size="sm"
-                className="w-full text-left justify-start bg-primary/10 hover:bg-primary/20 text-primary border-primary/20 text-xs rounded-lg px-3 py-1.5"
+                className="text-left justify-start bg-background hover:bg-primary/10 text-primary border-primary/30 hover:border-primary/70 text-xs rounded-full px-3.5 py-1.5 shadow-sm transition-all hover:shadow-md"
                 onClick={() => onSuggestionClick(suggestion)}
               >
                 {suggestion}
@@ -59,14 +59,20 @@ export function ChatMessage({ message, onSuggestionClick }: ChatMessageProps) {
             ))}
           </div>
         )}
-        <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
-           <Button variant="ghost" size="icon" className="h-6 w-6" onClick={handleCopy} aria-label="Copy message">
-            {copied ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
+        <div className={`absolute top-1.5 ${isUser ? 'left-1.5' : 'right-1.5'} opacity-0 group-hover:opacity-100 transition-opacity`}>
+           <Button 
+            variant="ghost" 
+            size="icon" 
+            className={`h-7 w-7 ${isUser ? 'text-primary-foreground/70 hover:text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`} 
+            onClick={handleCopy} 
+            aria-label="Copy message"
+          >
+            {copied ? <Check size={16} className="text-green-400" /> : <Copy size={16} />}
           </Button>
         </div>
       </div>
       {isUser && (
-        <span className="flex-shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-full bg-accent/20 text-accent">
+        <span className="flex-shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-full bg-accent text-accent-foreground shadow-sm">
           <IconComponent size={20} />
         </span>
       )}

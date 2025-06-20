@@ -4,52 +4,52 @@
 
 @layer base {
   :root {
-    --background: 0 0% 13%; /* #222222 */
-    --foreground: 0 0% 98%; /* Light text for dark background */
+    --background: 220 10% 10%; /* Rich, very dark cool black */
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 10%; /* Slightly darker than background for depth */
+    --card: 220 10% 12%; /* Slightly lighter than new background */
     --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 10%;
+    --popover: 220 10% 12%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 197 71% 53%; /* #29ABE2 */
-    --primary-foreground: 0 0% 100%; /* White text on primary */
+    --primary: 200 85% 55%; /* Vibrant blue */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 20%; /* A lighter gray */
+    --secondary: 220 10% 15%; /* A darker gray, harmonious with new background */
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 60%; /* Softer text color */
+    --muted: 220 10% 18%; /* Adjusted muted color */
+    --muted-foreground: 0 0% 70%; /* Softer muted text */
 
-    --accent: 283 71% 53%; /* #A729E2 */
-    --accent-foreground: 0 0% 100%; /* White text on accent */
+    --accent: 270 75% 60%; /* Lighter, harmonious purple */
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 70% 55%; /* Slightly less intense red */
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 25%; /* Slightly lighter border */
-    --input: 0 0% 25%; /* Input background */
-    --ring: 197 71% 53%; /* Primary color for focus rings */
+    --border: 220 10% 20%; /* Softer border */
+    --input: 220 10% 18%; /* Input background, matches new muted */
+    --ring: 200 85% 55%; /* Primary color for focus rings */
 
-    --radius: 0.5rem;
+    --radius: 0.75rem; /* Softer corners */
 
-    /* Sidebar variables, align with dark theme */
-    --sidebar-background: 0 0% 10%;
-    --sidebar-foreground: 0 0% 80%;
-    --sidebar-primary: 197 71% 53%;
+    /* Sidebar variables */
+    --sidebar-background: 220 10% 9%;
+    --sidebar-foreground: 0 0% 85%;
+    --sidebar-primary: 200 85% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent: 220 10% 14%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 197 71% 53%;
+    --sidebar-border: 220 10% 18%;
+    --sidebar-ring: 200 85% 55%;
     
     /* Chart colors */
-    --chart-1: 197 71% 53%; /* primary */
-    --chart-2: 283 71% 53%; /* accent */
-    --chart-3: 0 0% 60%;    /* muted-foreground */
-    --chart-4: 0 0% 40%;
-    --chart-5: 0 0% 20%;
+    --chart-1: 200 85% 55%; /* primary */
+    --chart-2: 270 75% 60%; /* accent */
+    --chart-3: 0 0% 70%;    /* muted-foreground */
+    --chart-4: 0 0% 50%;
+    --chart-5: 0 0% 30%;
   }
 }
 
@@ -58,6 +58,26 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
   }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-headline;
+  }
+}
+
+/* Subtle scrollbar styling for a modern look */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--background) / 0.5);
+  border-radius: var(--radius);
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: var(--radius);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted));
 }

@@ -8,7 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { generateInitialPrompt } from '@/ai/flows/generate-initial-prompt';
 import { contextAwareChat, type ContextAwareChatInput } from '@/ai/flows/context-aware-chat';
 import { useToast } from '@/hooks/use-toast';
-import { Bot, BotMessageSquare } from 'lucide-react';
+import { Bot, BotMessageSquare, Sparkles } from 'lucide-react'; // Added Sparkles for empty state
 
 export function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -42,7 +42,7 @@ export function ChatInterface() {
               {
                 id: 'init-prompt-msg',
                 role: 'assistant',
-                content: "Hello! I'm SynapseChat. How can I help you today? Here are some things you can ask:",
+                content: "Hello! I'm SynapseChat. How can I assist you today? Here are a few ideas:",
                 timestamp: new Date(),
                 suggestions: result.prompts,
               },
@@ -50,7 +50,7 @@ export function ChatInterface() {
           }
         } catch (error) {
           console.error("Failed to load initial prompts:", error);
-          toast({ title: "Error", description: "Could not load initial prompts.", variant: "destructive" });
+          toast({ title: "Initialization Error", description: "Could not load initial prompt suggestions.", variant: "destructive" });
         } finally {
           setIsLoading(false);
         }
@@ -76,8 +76,9 @@ export function ChatInterface() {
 
     try {
       const chatContext = messages
+        .slice(-5) // Use last 5 messages for context to keep it concise
         .map(msg => `${msg.role}: ${msg.content}`)
-        .join('\n');
+        .join('\n\n');
 
       const aiInput: ContextAwareChatInput = {
         userInput: currentInput,
@@ -95,11 +96,11 @@ export function ChatInterface() {
       setMessages((prevMessages) => [...prevMessages, aiResponse]);
     } catch (error) {
       console.error("Error calling AI model:", error);
-      toast({ title: "AI Error", description: "Failed to get response from AI.", variant: "destructive" });
+      toast({ title: "AI Communication Error", description: "Failed to get a response from the AI. Please check your connection or try again later.", variant: "destructive" });
        const errorResponse: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: "Sorry, I encountered an error. Please try again.",
+        content: "I'm having trouble connecting right now. Please try again in a moment.",
         timestamp: new Date(),
       };
       setMessages((prevMessages) => [...prevMessages, errorResponse]);
@@ -109,41 +110,41 @@ export function ChatInterface() {
   };
   
   const handleSuggestionClick = (suggestion: string) => {
-    setInput(suggestion);
+    // No need to setInput here if handleSend takes the suggestion directly
     handleSend(suggestion);
   };
 
   return (
-    <div className="flex flex-col flex-grow bg-card text-card-foreground rounded-xl shadow-lg border border-border/50 overflow-hidden">
-      <div className="p-4 border-b border-border/30 flex justify-between items-center">
-        <h2 className="text-xl font-semibold font-headline flex items-center">
-          <Bot className="mr-2 h-5 w-5 text-primary" /> Synapse AI Chat
+    <div className="flex flex-col flex-grow bg-card text-card-foreground rounded-xl shadow-xl border border-border/70 overflow-hidden h-full">
+      <div className="p-4 border-b border-border/50 flex justify-between items-center bg-card sticky top-0 z-10">
+        <h2 className="text-xl font-semibold flex items-center">
+          <Bot className="mr-2.5 h-6 w-6 text-primary" /> Synapse AI Chat
         </h2>
         <ModelSelector selectedModel={selectedModel} onModelChange={setSelectedModel} />
       </div>
 
-      <ScrollArea className="flex-grow p-6" ref={scrollAreaRef}>
-        <div className="space-y-6">
+      <ScrollArea className="flex-grow p-4 sm:p-6" ref={scrollAreaRef}>
+        <div className="space-y-6 pb-4"> {/* Added pb-4 for spacing at the bottom */}
           {messages.map((msg) => (
             <ChatMessage key={msg.id} message={msg} onSuggestionClick={handleSuggestionClick} />
           ))}
           {isLoading && messages.length > 0 && messages[messages.length -1].role === 'user' && (
-            <div className="flex items-start space-x-3 animate-pulse">
-              <span className="flex-shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted text-muted-foreground">
-                <Bot size={20} />
+            <div className="flex items-start space-x-3.5 animate-pulse group">
+              <span className="flex-shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted">
+                <Bot size={22} className="text-muted-foreground" />
               </span>
-              <div className="bg-secondary p-3 rounded-xl rounded-tl-none shadow max-w-[70%]">
+              <div className="bg-secondary p-3.5 rounded-xl rounded-tl-none shadow-sm max-w-[70%]">
                 <div className="h-4 bg-muted-foreground/30 rounded w-24"></div>
               </div>
             </div>
           )}
         </div>
          {messages.length === 0 && !isLoading && (
-            <div className="flex flex-col items-center justify-center h-full text-center text-muted-foreground space-y-4">
-                <BotMessageSquare className="h-24 w-24 text-primary/60" />
-                <p className="text-xl font-medium">Ready to Chat?</p>
-                <p className="text-sm max-w-xs">
-                    Type your first message below or try one of the suggestions if available.
+            <div className="flex flex-col items-center justify-center h-full text-center text-muted-foreground space-y-5 pt-10">
+                <Sparkles className="h-28 w-28 text-primary/50" strokeWidth={1.5} />
+                <p className="text-2xl font-semibold text-foreground">Ready to Chat?</p>
+                <p className="text-base max-w-sm">
+                    Type your first message below or click a suggestion to start conversing with the AI.
                 </p>
             </div>
         )}
