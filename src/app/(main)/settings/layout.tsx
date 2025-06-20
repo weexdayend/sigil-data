@@ -19,7 +19,7 @@ export default function SettingsLayout({ children }: { children: ReactNode }) {
         <aside className="w-full md:w-1/4 lg:w-1/5 xl:w-[260px] flex-shrink-0 animate-slide-up-fade" style={{animationDelay: '0.1s'}}>
           <SettingsNav />
         </aside>
-        <div className="flex-1 min-w-0 animate-slide-up-fade" style={{animationDelay: '0.2s'}}> {/* Added min-w-0 for flex child */}
+        <div className="flex-1 min-w-0 animate-slide-up-fade" style={{animationDelay: '0.2s'}}>
           {children}
         </div>
       </div>

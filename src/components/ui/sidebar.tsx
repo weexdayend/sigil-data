@@ -23,7 +23,7 @@ import {
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_WIDTH = "16rem" 
 const SIDEBAR_WIDTH_MOBILE = "20rem" 
-const SIDEBAR_WIDTH_ICON = "3.75rem" // Increased slightly for better icon centering and padding
+const SIDEBAR_WIDTH_ICON = "3.75rem" 
 
 type SidebarContext = {
   state: "expanded" | "collapsed"
@@ -139,7 +139,7 @@ const SidebarProvider = React.forwardRef<
 
     return (
       <SidebarContext.Provider value={contextValue}>
-        <TooltipProvider delayDuration={100}> {/* Slightly increased delay for tooltips */}
+        <TooltipProvider delayDuration={100}> 
           <div
             style={
               {
@@ -166,8 +166,8 @@ const SidebarProvider = React.forwardRef<
 SidebarProvider.displayName = "SidebarProvider"
 
 const Sidebar = React.forwardRef<
-  HTMLDivElement, // Changed from aside to div, as it's a generic container
-  React.ComponentProps<"div"> & { // Changed from aside
+  HTMLDivElement, 
+  React.ComponentProps<"div"> & { 
     side?: "left" | "right"
     variant?: "sidebar" | "floating" | "inset"
     collapsible?: "offcanvas" | "icon" | "none"
@@ -225,7 +225,7 @@ const Sidebar = React.forwardRef<
         ref={ref}
         data-sidebar="sidebar"
         className={cn(
-          "group hidden md:flex flex-col text-sidebar-foreground transition-all duration-200 ease-in-out z-20", // Faster transition
+          "group hidden md:flex flex-col text-sidebar-foreground transition-all duration-200 ease-in-out z-20", 
           side === "left" ? "left-0" : "right-0",
           state === "expanded" ? "w-[--sidebar-width]" : "w-[--sidebar-width-icon]",
           variant === "sidebar" && "h-screen sticky top-0 " + (side === "left" ? "border-r border-sidebar-border" : "border-l border-sidebar-border"),
@@ -479,7 +479,7 @@ const SidebarMenu = React.forwardRef<
   <ul
     ref={ref}
     data-sidebar="menu"
-    className={cn("flex w-full min-w-0 flex-col gap-1", className)} // Adjusted gap
+    className={cn("flex w-full min-w-0 flex-col gap-1.5", className)} 
     {...props}
   />
 ))
@@ -499,14 +499,15 @@ const SidebarMenuItem = React.forwardRef<
 SidebarMenuItem.displayName = "SidebarMenuItem"
 
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full items-center gap-3 overflow-hidden rounded-lg px-3 py-2.5 text-left text-[0.9rem] outline-none ring-sidebar-ring transition-all duration-150 ease-in-out hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-1 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-primary data-[active=true]:font-semibold data-[active=true]:text-sidebar-primary-foreground data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group-data-[state=collapsed]/sidebar-wrapper:justify-center group-data-[state=collapsed]/sidebar-wrapper:!size-10 group-data-[state=collapsed]/sidebar-wrapper:!p-0 group-data-[state=collapsed]/sidebar-wrapper:rounded-lg [&>span:last-child]:truncate group-data-[state=collapsed]/sidebar-wrapper:[&>span:last-child]:hidden [&>svg]:size-5 [&>svg]:shrink-0",
+  "peer/menu-button flex w-full items-center gap-3 overflow-hidden rounded-lg px-3 py-3 text-left text-[0.9rem] outline-none ring-sidebar-ring transition-all duration-150 ease-in-out hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-1 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-primary data-[active=true]:font-semibold data-[active=true]:text-sidebar-primary-foreground data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group-data-[state=collapsed]/sidebar-wrapper:justify-center group-data-[state=collapsed]/sidebar-wrapper:!size-10 group-data-[state=collapsed]/sidebar-wrapper:!p-0 group-data-[state=collapsed]/sidebar-wrapper:rounded-lg [&>span:last-child]:truncate group-data-[state=collapsed]/sidebar-wrapper:[&>span:last-child]:hidden [&>svg]:size-5 [&>svg]:shrink-0",
   {
     variants: {
       variant: {
         default: "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+        ghost: "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground" 
       },
       size: { 
-        default: "h-10 text-[0.9rem]", // Adjusted height slightly
+        default: "h-11 text-[0.9rem]", 
       },
     },
     defaultVariants: {
@@ -566,7 +567,7 @@ const SidebarMenuButton = React.forwardRef<
         <TooltipContent
           side="right"
           align="center"
-          sideOffset={8} // Increased offset
+          sideOffset={8} 
           className="bg-sidebar text-sidebar-foreground border-sidebar-border shadow-md rounded-md px-2.5 py-1.5 text-xs"
           {...tooltipProps}
         >
@@ -642,7 +643,7 @@ const SidebarMenuSkeleton = React.forwardRef<
     <div
       ref={ref}
       data-sidebar="menu-skeleton"
-      className={cn("rounded-lg h-10 flex gap-3 px-3 items-center",
+      className={cn("rounded-lg h-11 flex gap-3 px-3 items-center", // Matched h-11 from SidebarMenuButton
         state === "collapsed" && "justify-center !p-0 !size-10",
        className)}
       {...props}
@@ -681,7 +682,7 @@ const SidebarMenuSub = React.forwardRef<
     ref={ref}
     data-sidebar="menu-sub"
     className={cn(
-      "ml-[calc(theme(spacing.10)_-_theme(spacing.3))] mr-2 flex min-w-0 flex-col gap-0.5 border-l border-sidebar-border/70 pl-3 py-1", // Adjusted spacing
+      "ml-[calc(theme(spacing.10)_-_theme(spacing.3))] mr-2 flex min-w-0 flex-col gap-0.5 border-l border-sidebar-border/70 pl-3 py-1", 
       className
     )}
     {...props}

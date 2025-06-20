@@ -16,8 +16,9 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { Logo } from "@/components/common/Logo";
-import { LayoutDashboard, MessageSquareText, PlusCircle, Settings, UserCircle, History, KeyRound, Palette } from "lucide-react";
+import { LayoutDashboard, MessageSquareText, PlusCircle, Settings, UserCircle, History, KeyRound, Palette, Cog } from "lucide-react";
 import Link from "next/link";
 
 export default function MainAppLayout({
@@ -52,6 +53,13 @@ export default function MainAppLayout({
                 <PlusCircle className="h-5 w-5" />
               </Link>
             </Button>
+
+            {/* Mock Quota Display */}
+            <div className="mt-4 group-data-[state=expanded]/sidebar-wrapper:opacity-100 group-data-[state=collapsed]/sidebar-wrapper:opacity-0 group-data-[state=collapsed]/sidebar-wrapper:hidden transition-opacity duration-200 px-1">
+              <div className="text-xs text-sidebar-foreground/70 mb-1.5 font-medium">Monthly Usage</div>
+              <Progress value={60} className="h-2 bg-sidebar-accent" indicatorClassName="bg-sidebar-primary" />
+              <p className="text-xs text-sidebar-foreground/70 mt-1.5">600 / 1000 Chats</p>
+            </div>
           </SidebarHeader>
 
           <SidebarContent className="p-2 pr-1">
