@@ -54,6 +54,9 @@
 }
 
 @layer base {
+  html {
+    @apply scroll-smooth;
+  }
   * {
     @apply border-border;
   }
@@ -61,7 +64,7 @@
     @apply bg-background text-foreground antialiased;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-headline;
+    @apply font-headline tracking-tight; /* Added tracking-tight for modern feel */
   }
 }
 
@@ -80,4 +83,20 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--muted));
+}
+
+/* Custom animation classes (if not handled by tailwind-animate directly) */
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+.animate-slide-up-fade {
+  animation: slide-up-fade 0.5s ease-out forwards;
+}
+.group-hover-animate-subtle-scale {
+  @apply group-hover:animate-subtle-scale;
+}
+
+/* For staggered animations (apply to parent) */
+.stagger-children > * {
+  opacity: 0;
 }

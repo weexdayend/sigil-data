@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -8,19 +9,19 @@ export default {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    container: { // Added for easier centering with padding
+    container: { 
       center: true,
       padding: {
         DEFAULT: '1rem',
         sm: '2rem',
-        lg: '4rem',
-        xl: '5rem',
+        lg: '3rem', // Slightly reduced for a bit more content width
+        xl: '4rem',
       },
     },
     extend: {
       fontFamily: {
         body: ['Inter', 'system-ui', 'sans-serif'],
-        headline: ['Inter', 'system-ui', 'sans-serif'], // Keep consistent or choose a distinct headline font
+        headline: ['Inter', 'system-ui', 'sans-serif'], 
         code: ['monospace'],
       },
       colors: {
@@ -76,45 +77,61 @@ export default {
         },
       },
       borderRadius: {
-        lg: 'var(--radius)', // e.g., 0.75rem
-        md: 'calc(var(--radius) - 0.25rem)', // e.g., 0.5rem
-        sm: 'calc(var(--radius) - 0.375rem)', // e.g., 0.375rem
+        lg: 'var(--radius)', 
+        md: 'calc(var(--radius) - 0.25rem)', 
+        sm: 'calc(var(--radius) - 0.375rem)', 
+        xl: 'calc(var(--radius) + 0.25rem)', // Added for larger rounding
+        '2xl': 'calc(var(--radius) + 0.5rem)', // Added for even larger rounding
       },
       keyframes: {
         'accordion-down': {
-          from: {
-            height: '0',
-          },
-          to: {
-            height: 'var(--radix-accordion-content-height)',
-          },
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
         },
         'accordion-up': {
-          from: {
-            height: 'var(--radix-accordion-content-height)',
-          },
-          to: {
-            height: '0',
-          },
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
         },
-        'blob': { /* For DynamicBackground if needed */
+        'blob': { 
           '0%': { transform: 'scale(1) translate(0px, 0px)' },
           '33%': { transform: 'scale(1.1) translate(30px, -20px)' },
           '66%': { transform: 'scale(0.9) translate(-20px, 30px)' },
           '100%': { transform: 'scale(1) translate(0px, 0px)' },
+        },
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        'slide-up-fade': {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'subtle-scale': {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.03)' },
+        },
+        'pulse-glow': {
+          '0%, 100%': { boxShadow: '0 0 0 0 hsla(var(--primary)/0.7)' },
+          '50%': { boxShadow: '0 0 20px 10px hsla(var(--primary)/0)' },
         }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'blob': 'blob 7s infinite alternate',
+        'fade-in': 'fade-in 0.5s ease-out forwards',
+        'slide-up-fade': 'slide-up-fade 0.5s ease-out forwards',
+        'subtle-scale': 'subtle-scale 0.3s ease-in-out',
+        'pulse-glow': 'pulse-glow 2s infinite ease-out',
       },
-      boxShadow: { // Adding some more modern shadow options
+      boxShadow: { 
         'soft': '0 4px 12px hsla(var(--primary)/0.05), 0 2px 6px hsla(var(--primary)/0.08)',
         'medium': '0 8px 16px hsla(var(--primary)/0.07), 0 4px 8px hsla(var(--primary)/0.1)',
         'hard': '0 12px 24px hsla(var(--primary)/0.1), 0 6px 12px hsla(var(--primary)/0.12)',
+        'primary-glow': '0 0 15px hsla(var(--primary)/0.5), 0 0 30px hsla(var(--primary)/0.3)',
+        'accent-glow': '0 0 15px hsla(var(--accent)/0.5), 0 0 30px hsla(var(--accent)/0.3)',
       },
-      typography: (theme: (arg0: string) => any) => ({ // For potential future prose styling
+      typography: (theme: (arg0: string) => any) => ({ 
         DEFAULT: {
           css: {
             color: theme('colors.foreground'),
@@ -125,7 +142,16 @@ export default {
                 opacity: 0.8,
               },
             },
-            // ... more prose styles
+            h1: { color: theme('colors.foreground')},
+            h2: { color: theme('colors.foreground')},
+            h3: { color: theme('colors.foreground')},
+            h4: { color: theme('colors.foreground')},
+            strong: { color: theme('colors.foreground')},
+            code: { color: theme('colors.accent.DEFAULT'), backgroundColor: theme('colors.accent.DEFAULT')+'20', padding: '0.2em 0.4em', borderRadius: '0.25rem' },
+            blockquote: {
+              color: theme('colors.muted.foreground'),
+              borderLeftColor: theme('colors.border'),
+            },
           },
         },
       }),
