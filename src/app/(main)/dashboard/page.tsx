@@ -2,7 +2,7 @@
 import { UserSettings } from '@/components/dashboard/UserSettings';
 import { ChatHistoryList } from '@/components/dashboard/ChatHistoryList';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { User, MessageSquareText, Settings2, Activity, Zap, BarChart3, Users, Briefcase } from 'lucide-react'; 
+import { User, MessageSquareText, Settings2, Activity, Zap, BarChart3, Users, Briefcase, LayoutGrid } from 'lucide-react'; 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
@@ -28,41 +28,10 @@ export default function DashboardPage() {
         </Button>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat, index) => (
-          <Card 
-            key={stat.title} 
-            className="shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-1 border-border hover:border-primary/40 bg-card animate-slide-up-fade"
-            style={{ animationDelay: `${0.1 + index * 0.1}s` }}
-          >
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 pt-5">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
-                {stat.title}
-              </CardTitle>
-              {stat.icon}
-            </CardHeader>
-            <CardContent className="pb-5">
-              <div className="text-2xl sm:text-3xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground pt-1">{stat.trend}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-      
-      <div className="grid gap-8 lg:grid-cols-3">
-        <div className="lg:col-span-2 animate-slide-up-fade" style={{ animationDelay: '0.5s' }}>
-          <Card className="shadow-xl h-full border-border bg-card/80 backdrop-blur-sm">
-            <CardHeader className="pt-6 pb-4 border-b border-border/70">
-              <CardTitle className="text-xl sm:text-2xl">Recent Chat History</CardTitle>
-              <CardDescription>Review and continue your past conversations.</CardDescription>
-            </CardHeader>
-            <CardContent className="px-4 sm:px-6 py-6">
-              <ChatHistoryList />
-            </CardContent>
-          </Card>
-        </div>
-        <div className="lg:col-span-1 animate-slide-up-fade" style={{ animationDelay: '0.6s' }}>
-          <Card className="shadow-xl h-full border-border bg-card/80 backdrop-blur-sm">
+      <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-8 xl:gap-10">
+        {/* Left Column (Settings) - appears first on mobile due to natural flow, then moves to left on lg */}
+        <div className="lg:col-span-1 lg:order-1 order-2 mt-8 lg:mt-0 animate-slide-up-fade" style={{ animationDelay: '0.3s' }}>
+          <Card className="shadow-xl h-full border-border bg-card/80 backdrop-blur-sm sticky top-24"> {/* Sticky for settings panel */}
             <CardHeader className="pt-6 pb-4 border-b border-border/70">
               <CardTitle className="text-xl sm:text-2xl flex items-center">
                 <Settings2 className="mr-2.5 h-6 w-6 text-muted-foreground" /> Account Settings
@@ -74,7 +43,48 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Right Column (Main Content: Stats & History) - appears second on mobile, then moves to right on lg */}
+        <div className="lg:col-span-2 lg:order-2 order-1 space-y-8">
+          {/* Stats Grid */}
+          <div className="grid gap-6 md:grid-cols-2">
+            {stats.map((stat, index) => (
+              <Card 
+                key={stat.title} 
+                className="shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-1 border-border hover:border-primary/40 bg-card animate-slide-up-fade"
+                style={{ animationDelay: `${0.1 + index * 0.1}s` }}
+              >
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 pt-5">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
+                    {stat.title}
+                  </CardTitle>
+                  {stat.icon}
+                </CardHeader>
+                <CardContent className="pb-5">
+                  <div className="text-2xl sm:text-3xl font-bold">{stat.value}</div>
+                  <p className="text-xs text-muted-foreground pt-1">{stat.trend}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+      
+          {/* Chat History */}
+          <div className="animate-slide-up-fade" style={{ animationDelay: '0.2s' }}>
+            <Card className="shadow-xl h-full border-border bg-card/80 backdrop-blur-sm">
+              <CardHeader className="pt-6 pb-4 border-b border-border/70">
+                <CardTitle className="text-xl sm:text-2xl flex items-center">
+                  <LayoutGrid className="mr-2.5 h-6 w-6 text-muted-foreground" /> Recent Chat History
+                </CardTitle>
+                <CardDescription>Review and continue your past conversations.</CardDescription>
+              </CardHeader>
+              <CardContent className="px-4 sm:px-6 py-6">
+                <ChatHistoryList />
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+
