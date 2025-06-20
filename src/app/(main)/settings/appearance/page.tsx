@@ -24,7 +24,7 @@ export default function AppearancePage() {
   };
 
   return (
-    <Card className="shadow-xl border-border bg-card/80 backdrop-blur-sm">
+    <Card className="w-full shadow-xl border-border bg-card/80 backdrop-blur-sm">
       <CardHeader className="pt-6 pb-4 border-b border-border/70">
         <CardTitle className="text-xl sm:text-2xl">Theme & Appearance</CardTitle>
         <CardDescription>Customize the look and feel of the application.</CardDescription>
@@ -33,9 +33,9 @@ export default function AppearancePage() {
         <div>
           <Label className="text-base font-medium text-foreground/90">Theme Mode</Label>
           <p className="text-sm text-muted-foreground mb-3">Select your preferred interface theme.</p>
-          <RadioGroup 
-            value={selectedTheme} 
-            onValueChange={handleThemeChange} 
+          <RadioGroup
+            value={selectedTheme}
+            onValueChange={handleThemeChange}
             className="grid grid-cols-1 sm:grid-cols-3 gap-4"
           >
             <div>
@@ -64,14 +64,14 @@ export default function AppearancePage() {
                 htmlFor="theme-system"
                 className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer transition-all"
               >
-                <Laptop className="mb-3 h-6 w-6" /> 
+                <Laptop className="mb-3 h-6 w-6" />
                 System
               </Label>
             </div>
           </RadioGroup>
         </div>
         {/* The save button is removed as theme changes are applied instantly */}
-        {/* 
+        {/*
         <div className="pt-4">
             <Button onClick={() => setTheme(selectedTheme)}>Save Appearance Settings</Button>
         </div>

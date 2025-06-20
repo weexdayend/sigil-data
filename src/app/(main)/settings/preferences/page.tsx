@@ -4,7 +4,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 
 export default function ApplicationPreferencesPage() {
   return (
-    <Card className="shadow-xl border-border bg-card/80 backdrop-blur-sm">
+    <Card className="w-full shadow-xl border-border bg-card/80 backdrop-blur-sm">
       <CardHeader className="pt-6 pb-4 border-b border-border/70">
         <CardTitle className="text-xl sm:text-2xl">Application Preferences</CardTitle>
         <CardDescription>Customize your default AI model and notification settings.</CardDescription>

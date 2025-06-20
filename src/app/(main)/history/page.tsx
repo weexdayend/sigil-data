@@ -15,7 +15,7 @@ export default function ChatHistoryPage() {
         </p>
       </div>
 
-      <Card className="shadow-xl border-border bg-card/80 backdrop-blur-sm animate-slide-up-fade" style={{animationDelay: '0.1s'}}>
+      <Card className="w-full shadow-xl border-border bg-card/80 backdrop-blur-sm animate-slide-up-fade" style={{animationDelay: '0.1s'}}>
         <CardHeader className="pt-6 pb-4 border-b border-border/70">
           <CardTitle className="text-xl sm:text-2xl">All Conversations</CardTitle>
           <CardDescription>Browse through your complete chat log.</CardDescription>

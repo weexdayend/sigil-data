@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 export default function ApiKeysPage() {
   return (
-    <Card className="shadow-xl border-border bg-card/80 backdrop-blur-sm">
+    <Card className="w-full shadow-xl border-border bg-card/80 backdrop-blur-sm">
       <CardHeader className="pt-6 pb-4 border-b border-border/70">
         <CardTitle className="text-xl sm:text-2xl">API Key Management</CardTitle>
         <CardDescription>Manage your API keys for external integrations (Feature Coming Soon).</CardDescription>
