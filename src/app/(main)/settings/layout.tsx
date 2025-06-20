@@ -15,7 +15,7 @@ export default function SettingsLayout({ children }: { children: ReactNode }) {
         </p>
       </div>
 
-      <div className="flex flex-col gap-8 md:flex-row md:gap-10 lg:gap-12">
+      <div className="flex flex-col gap-8 md:flex-row">
         <aside className="w-full md:w-1/4 lg:w-1/5 xl:w-[260px] flex-shrink-0 animate-slide-up-fade" style={{animationDelay: '0.1s'}}>
           <SettingsNav />
         </aside>

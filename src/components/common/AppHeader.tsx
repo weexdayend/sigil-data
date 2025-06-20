@@ -99,8 +99,8 @@ export function AppHeader({ variant = 'landing' }: AppHeaderProps) {
         variant === 'app' ? "border-border/60" : "border-transparent" // Transparent border for landing page header
       )}>
       <div className={cn(
-          "flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8", // Slightly taller header
-          variant === 'app' ? "max-w-none" : "container" // Full width for app, container for landing
+ "flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8", // Slightly taller header
+ variant === 'landing' && 'container' // Only apply container class for landing variant
       )}>
         
         {variant === 'app' && (
