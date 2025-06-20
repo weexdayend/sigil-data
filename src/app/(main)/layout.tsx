@@ -1,5 +1,5 @@
 
-"use client"; 
+"use client";
 import { AppHeader } from '@/components/common/AppHeader';
 import { AppFooter } from '@/components/common/AppFooter';
 import { usePathname } from 'next/navigation';
@@ -17,16 +17,8 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/common/Logo";
-import { LayoutDashboard, MessageSquareText, PlusCircle, Settings, UserCircle, Bell } from "lucide-react";
+import { LayoutDashboard, MessageSquareText, PlusCircle, Settings, UserCircle, History, KeyRound, Palette } from "lucide-react";
 import Link from "next/link";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 export default function MainAppLayout({
   children,
@@ -36,12 +28,9 @@ export default function MainAppLayout({
   const pathname = usePathname();
 
   if (pathname === '/chat') {
-    // For the chat page, render children directly to allow full viewport control
-    // This page uses its own ChatLayout with its own sidebar.
     return <div className="h-screen flex flex-col">{children}</div>;
   }
 
-  // Standard layout for other pages (e.g., Dashboard) with a main navigation sidebar
   return (
     <SidebarProvider defaultOpen>
       <div className="flex min-h-screen">
@@ -49,13 +38,17 @@ export default function MainAppLayout({
           <SidebarHeader className="p-4">
             <div className="flex items-center justify-between">
               <Logo iconSize={22} textSize="text-xl" />
-              <SidebarTrigger className="hidden md:flex" /> {/* Desktop toggle */}
+              <SidebarTrigger className="hidden md:flex" />
             </div>
-            <Button variant="outline" className="w-full mt-4 h-10 border-primary/50 text-primary hover:bg-primary/10 hover:border-primary group-data-[state=collapsed]/sidebar-wrapper:hidden">
-              <PlusCircle className="mr-2 h-5 w-5" /> New Chat
+            <Button variant="outline" asChild className="w-full mt-4 h-10 border-primary/50 text-primary hover:bg-primary/10 hover:border-primary group-data-[state=collapsed]/sidebar-wrapper:hidden">
+              <Link href="/chat">
+                <PlusCircle className="mr-2 h-5 w-5" /> New Chat
+              </Link>
             </Button>
-             <Button variant="ghost" size="icon" className="w-full mt-4 h-10 border-primary/50 text-primary hover:bg-primary/10 hover:border-primary hidden group-data-[state=collapsed]/sidebar-wrapper:flex group-data-[state=collapsed]/sidebar-wrapper:justify-center">
-              <PlusCircle className="h-5 w-5" />
+             <Button variant="ghost" size="icon" asChild className="w-full mt-4 h-10 border-primary/50 text-primary hover:bg-primary/10 hover:border-primary hidden group-data-[state=collapsed]/sidebar-wrapper:flex group-data-[state=collapsed]/sidebar-wrapper:justify-center">
+              <Link href="/chat" aria-label="New Chat">
+                <PlusCircle className="h-5 w-5" />
+              </Link>
             </Button>
           </SidebarHeader>
 
@@ -70,32 +63,40 @@ export default function MainAppLayout({
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={pathname.startsWith('/chat')} tooltip="Chat">
+                <SidebarMenuButton asChild isActive={pathname.startsWith('/chat')} tooltip="AI Chat">
                   <Link href="/chat">
                     <MessageSquareText />
                     <span>AI Chat</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              {/* Add more main navigation items here */}
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={pathname.startsWith('/history')} tooltip="Chat History">
+                  <Link href="/history">
+                    <History />
+                    <span>Chat History</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={pathname.startsWith('/settings')} tooltip="Settings">
+                  <Link href="/settings/account">
+                    <Settings />
+                    <span>Settings</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarContent>
 
           <SidebarFooter className="p-3 border-t border-sidebar-border">
+            {/* Footer links can be more contextual or removed if settings are in main nav */}
             <SidebarMenu>
                 <SidebarMenuItem>
                   <SidebarMenuButton asChild tooltip="Account Settings">
-                    <Link href="/dashboard"> {/* Assuming settings are on dashboard for now */}
+                    <Link href="/settings/account">
                       <UserCircle />
                       <span>Account</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild tooltip="Application Settings">
-                    <Link href="/dashboard"> {/* Assuming settings are on dashboard for now */}
-                      <Settings />
-                      <span>Settings</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

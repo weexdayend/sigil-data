@@ -11,7 +11,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Separator } from '@/components/ui/separator';
 import { UserCircle, Palette, Bell } from 'lucide-react';
 
-export function UserSettings() {
+// THIS FILE IS NO LONGER USED ON THE DASHBOARD PAGE DIRECTLY.
+// Its contents have been split into:
+// - src/components/settings/UserSettings.tsx (for profile info)
+// - src/components/settings/ApplicationPreferences.tsx (for app preferences)
+// This file can be DELETED or kept for reference if you plan to merge them back later.
+// For now, I will leave its content as it was before this refactor.
+
+export function UserSettings_OLD() {
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -46,7 +53,7 @@ export function UserSettings() {
           </div>
         </CardContent>
       </section>
-      
+
       <Separator className="my-6 sm:my-8 bg-border/50" />
 
       <section aria-labelledby="application-settings">
@@ -72,7 +79,7 @@ export function UserSettings() {
             </Select>
             <p className="text-xs text-muted-foreground mt-1.5">This model will be used by default for all new chat sessions.</p>
           </div>
-        
+
           <div className="flex items-center justify-between rounded-lg border border-border/70 p-4 bg-background/30">
             <div>
               <Label htmlFor="notifications" className="text-sm font-medium text-foreground/90 flex items-center">
@@ -87,9 +94,9 @@ export function UserSettings() {
         </CardContent>
       </section>
 
-      <Button 
-        type="submit" 
-        size="lg" 
+      <Button
+        type="submit"
+        size="lg"
         className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 text-base rounded-lg mt-8 sm:mt-10"
       >
         Save Changes
@@ -97,3 +104,4 @@ export function UserSettings() {
     </form>
   );
 }
+
