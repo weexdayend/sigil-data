@@ -2,7 +2,7 @@
 import { UserSettings } from '@/components/dashboard/UserSettings';
 import { ChatHistoryList } from '@/components/dashboard/ChatHistoryList';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { User, MessageSquareText, Settings2, Activity, Zap, BarChart3, Users, Briefcase, LayoutGrid } from 'lucide-react'; 
+import { MessageSquareText, Settings2, LayoutGrid, Zap, BarChart3, Users, PlusCircle } from 'lucide-react'; 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
@@ -16,22 +16,20 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8 lg:space-y-10 animate-fade-in">
+      {/* Page Header - Moved New Chat button from here as it's in the main sidebar now */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-border pb-6">
         <div>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Welcome Back, SynapseUser!</h1>
           <p className="mt-1.5 text-muted-foreground text-base">Here's an overview of your AI activity and settings.</p>
         </div>
-        <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg group whitespace-nowrap">
-          <Link href="/chat">
-            <MessageSquareText className="mr-2 h-5 w-5" /> New Chat
-          </Link>
-        </Button>
+         {/* The "New Chat" button is now primarily in the main app sidebar. 
+             If needed for specific contexts, it can be added back here or elsewhere. */}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-8 xl:gap-10">
-        {/* Left Column (Settings) - appears first on mobile due to natural flow, then moves to left on lg */}
+        {/* Left Column (Settings) */}
         <div className="lg:col-span-1 lg:order-1 order-2 mt-8 lg:mt-0 animate-slide-up-fade" style={{ animationDelay: '0.3s' }}>
-          <Card className="shadow-xl h-full border-border bg-card/80 backdrop-blur-sm sticky top-24"> {/* Sticky for settings panel */}
+          <Card className="shadow-xl h-full border-border bg-card/80 backdrop-blur-sm sticky top-24">
             <CardHeader className="pt-6 pb-4 border-b border-border/70">
               <CardTitle className="text-xl sm:text-2xl flex items-center">
                 <Settings2 className="mr-2.5 h-6 w-6 text-muted-foreground" /> Account Settings
@@ -44,7 +42,7 @@ export default function DashboardPage() {
           </Card>
         </div>
 
-        {/* Right Column (Main Content: Stats & History) - appears second on mobile, then moves to right on lg */}
+        {/* Right Column (Main Content: Stats & History) */}
         <div className="lg:col-span-2 lg:order-2 order-1 space-y-8">
           {/* Stats Grid */}
           <div className="grid gap-6 md:grid-cols-2">
@@ -87,4 +85,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
