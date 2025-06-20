@@ -14,7 +14,7 @@ export function HeroSection() {
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-headline font-extrabold tracking-tight">
             <span className="block">Welcome to</span>
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent py-2">
-              SynapseChat
+              Sigil AI
             </span>
           </h1>
           <p className="mt-6 max-w-2xl mx-auto text-lg sm:text-xl text-muted-foreground">
