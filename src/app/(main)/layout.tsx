@@ -27,25 +27,27 @@ export default function MainAppLayout({
 }) {
   const pathname = usePathname();
 
-  if (pathname === '/chat') {
+  if (pathname === '/chat') { // Dedicated layout for chat page
     return <div className="h-screen flex flex-col">{children}</div>;
   }
 
   return (
-    <SidebarProvider defaultOpen>
+    <SidebarProvider defaultOpen storageKey="main-sidebar-state">
       <div className="flex min-h-screen">
-        <Sidebar className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground w-[260px] md:w-[280px] group-data-[state=collapsed]/sidebar-wrapper:w-[var(--sidebar-width-icon)]">
-          <SidebarHeader className="p-4">
-            <div className="flex items-center justify-between">
-              <Logo iconSize={22} textSize="text-xl" />
+        <Sidebar className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground w-[var(--sidebar-width)] md:w-[var(--sidebar-width)] group-data-[state=collapsed]/sidebar-wrapper:w-[var(--sidebar-width-icon)]">
+          <SidebarHeader className="p-3">
+            <div className="flex items-center justify-between h-10"> {/* Fixed height for header items */}
+              <div className="group-data-[state=expanded]/sidebar-wrapper:opacity-100 group-data-[state=collapsed]/sidebar-wrapper:opacity-0 transition-opacity duration-200">
+                <Logo iconSize={22} textSize="text-xl" />
+              </div>
               <SidebarTrigger className="hidden md:flex" />
             </div>
-            <Button variant="outline" asChild className="w-full mt-4 h-10 border-primary/50 text-primary hover:bg-primary/10 hover:border-primary group-data-[state=collapsed]/sidebar-wrapper:hidden">
+            <Button variant="default" asChild className="w-full mt-3 h-10 bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90 group-data-[state=collapsed]/sidebar-wrapper:hidden rounded-lg">
               <Link href="/chat">
                 <PlusCircle className="mr-2 h-5 w-5" /> New Chat
               </Link>
             </Button>
-             <Button variant="ghost" size="icon" asChild className="w-full mt-4 h-10 border-primary/50 text-primary hover:bg-primary/10 hover:border-primary hidden group-data-[state=collapsed]/sidebar-wrapper:flex group-data-[state=collapsed]/sidebar-wrapper:justify-center">
+             <Button variant="ghost" size="icon" asChild className="w-full mt-3 h-10 text-sidebar-primary hover:bg-sidebar-accent hidden group-data-[state=collapsed]/sidebar-wrapper:flex group-data-[state=collapsed]/sidebar-wrapper:justify-center rounded-lg">
               <Link href="/chat" aria-label="New Chat">
                 <PlusCircle className="h-5 w-5" />
               </Link>
@@ -89,11 +91,10 @@ export default function MainAppLayout({
             </SidebarMenu>
           </SidebarContent>
 
-          <SidebarFooter className="p-3 border-t border-sidebar-border">
-            {/* Footer links can be more contextual or removed if settings are in main nav */}
+          <SidebarFooter className="p-2 border-t border-sidebar-border">
             <SidebarMenu>
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild tooltip="Account Settings">
+                  <SidebarMenuButton asChild tooltip="Account Settings" variant="ghost" className="text-sidebar-foreground/80 hover:text-sidebar-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground">
                     <Link href="/settings/account">
                       <UserCircle />
                       <span>Account</span>
@@ -106,7 +107,7 @@ export default function MainAppLayout({
 
         <SidebarInset className="flex-1 flex flex-col bg-background">
           <AppHeader variant="app" />
-          <main className="flex-grow w-full max-w-none mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 overflow-y-auto">
+          <main className="flex-grow w-full max-w-none mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 overflow-y-auto"> {/* Adjusted padding */}
             {children}
           </main>
           <AppFooter />

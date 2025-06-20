@@ -16,7 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SidebarTrigger } from '@/components/ui/sidebar'; // For mobile main sidebar
+import { SidebarTrigger } from '@/components/ui/sidebar'; 
 
 type NavLink = {
   href: string;
@@ -38,12 +38,15 @@ export function AppHeader({ variant = 'landing' }: AppHeaderProps) {
         setCurrentHash(window.location.hash);
       }
     };
-    updateHash(); // Initial call
-    window.addEventListener('hashchange', updateHash);
-    return () => {
-      window.removeEventListener('hashchange', updateHash);
-    };
-  }, []);
+
+    if (typeof window !== 'undefined') {
+      updateHash(); // Initial call only on client
+      window.addEventListener('hashchange', updateHash);
+      return () => {
+        window.removeEventListener('hashchange', updateHash);
+      };
+    }
+  }, [pathname]); // Re-run if pathname changes for initial hash on new pages
 
 
   const landingLinks: NavLink[] = [
@@ -51,15 +54,18 @@ export function AppHeader({ variant = 'landing' }: AppHeaderProps) {
     { href: '/#pricing', label: 'Pricing' },
   ];
   
-  // App links are now in the main sidebar, so this is for mobile fallback or specific app header items
-  const appMobileNavLinks: NavLink[] = [
+  const appMobileNavLinks: NavLink[] = [ // Fallback for app header on mobile if main sidebar is not used/visible
     { href: '/dashboard', label: 'Dashboard' },
     { href: '/chat', label: 'Chat' },
+    { href: '/history', label: 'History' },
+    { href: '/settings/account', label: 'Settings' },
   ];
 
 
   const getLandingLinkClass = (href: string) => {
-    const isHashLinkActive = href.startsWith('/#') && pathname === '/' && currentHash === href.substring(1);
+    // Only access window.location.hash if on client
+    const clientHash = typeof window !== 'undefined' ? window.location.hash : '';
+    const isHashLinkActive = href.startsWith('/#') && pathname === '/' && clientHash === href.substring(1);
     return cn(
       "text-sm font-medium transition-colors hover:text-primary px-3 py-2 rounded-md",
       (pathname === href && !href.startsWith('/#')) || isHashLinkActive
@@ -69,7 +75,8 @@ export function AppHeader({ variant = 'landing' }: AppHeaderProps) {
   };
   
   const getMobileLandingLinkClass = (href: string) => {
-    const isHashLinkActive = href.startsWith('/#') && pathname === '/' && currentHash === href.substring(1);
+    const clientHash = typeof window !== 'undefined' ? window.location.hash : '';
+    const isHashLinkActive = href.startsWith('/#') && pathname === '/' && clientHash === href.substring(1);
     return cn(
       "block px-3 py-2 rounded-md text-base font-medium transition-colors hover:text-primary hover:bg-primary/5",
       (pathname === href && !href.startsWith('/#')) || isHashLinkActive
@@ -81,20 +88,26 @@ export function AppHeader({ variant = 'landing' }: AppHeaderProps) {
   const getMobileAppLinkClass = (href: string) => {
     return cn(
       "block px-3 py-2 rounded-md text-base font-medium transition-colors hover:text-primary hover:bg-primary/5",
-      pathname === href ? "text-primary bg-primary/10" : "text-foreground"
+      pathname.startsWith(href) ? "text-primary bg-primary/10" : "text-foreground" // Use startsWith for broader matching like /settings/*
     );
   };
 
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
-      <div className="container-fluid flex h-14 items-center justify-between px-4 sm:px-6 lg:px-8 max-w-none"> {/* Max-w-none for full width header */}
+    <header className={cn(
+        "sticky top-0 z-40 w-full border-b backdrop-blur-md supports-[backdrop-filter]:bg-background/60",
+        variant === 'app' ? "border-border/60" : "border-transparent" // Transparent border for landing page header
+      )}>
+      <div className={cn(
+          "flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8", // Slightly taller header
+          variant === 'app' ? "max-w-none" : "container" // Full width for app, container for landing
+      )}>
         
         {variant === 'app' && (
-          <div className="flex items-center">
-            {/* Mobile trigger for the main sidebar, if main layout uses one */}
-            <SidebarTrigger className="md:hidden mr-2" />
-            <Logo iconSize={20} textSize="text-lg" />
+          <div className="flex items-center gap-2">
+            <SidebarTrigger className="md:hidden text-muted-foreground hover:text-foreground" />
+            {/* Logo might be in sidebar for app variant, so conditionally render or remove */}
+            {/* <Logo iconSize={20} textSize="text-lg" /> */}
           </div>
         )}
 
@@ -118,24 +131,24 @@ export function AppHeader({ variant = 'landing' }: AppHeaderProps) {
               <Button variant="ghost" asChild className="text-muted-foreground hover:text-primary">
                 <Link href="/dashboard">Sign In</Link>
               </Button>
-              <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold">
+              <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg">
                 <Link href="/chat">Get Started</Link>
               </Button>
             </>
-          ) : ( // App variant header actions
+          ) : ( 
             <>
-              <Button variant="ghost" size="icon" aria-label="Notifications" className="text-muted-foreground hover:text-primary">
+              <Button variant="ghost" size="icon" aria-label="Notifications" className="text-muted-foreground hover:text-primary rounded-full w-9 h-9">
                 <Bell className="h-5 w-5" />
               </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" aria-label="User Account" className="text-muted-foreground hover:text-primary rounded-full">
-                    <UserCircle className="h-6 w-6" />
+                  <Button variant="ghost" className="rounded-full p-0 w-9 h-9" aria-label="User Account">
+                    <UserCircle className="h-6 w-6 text-muted-foreground group-hover:text-primary" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuContent align="end" className="w-56 mt-1 shadow-lg border-border bg-popover">
                   <DropdownMenuLabel>
-                    <p className="font-medium">SynapseUser</p>
+                    <p className="font-medium text-foreground">SynapseUser</p>
                     <p className="text-xs text-muted-foreground">user@synapsechat.ai</p>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
@@ -143,8 +156,7 @@ export function AppHeader({ variant = 'landing' }: AppHeaderProps) {
                     <Link href="/dashboard"><LayoutDashboardIcon className="mr-2 h-4 w-4" /> Dashboard</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                     {/* Assuming settings are part of dashboard or a dedicated page */}
-                    <Link href="/dashboard#settings"><Settings className="mr-2 h-4 w-4" /> Settings</Link>
+                    <Link href="/settings/account"><Settings className="mr-2 h-4 w-4" /> Settings</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
@@ -155,65 +167,54 @@ export function AppHeader({ variant = 'landing' }: AppHeaderProps) {
             </>
           )}
           
-          {/* Mobile Menu Toggle for Landing Page */}
-          {variant === 'landing' && (
-            <div className="md:hidden">
+          {(variant === 'landing' || (variant === 'app' && !pathname.startsWith('/chat'))) && ( // Show mobile toggle for landing or non-chat app pages
+            <div className={cn(variant === 'app' ? "hidden" : "md:hidden")}> {/* For app variant, main sidebar trigger handles mobile menu */}
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label="Toggle mobile menu"
-                className="text-muted-foreground hover:text-primary"
+                className="text-muted-foreground hover:text-primary w-9 h-9"
               >
-                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </Button>
             </div>
           )}
         </div>
       </div>
 
-      {/* Mobile Menu Drawer for Landing Page */}
-      {variant === 'landing' && mobileMenuOpen && (
-        <div className="md:hidden border-t border-border/60 bg-background/95 backdrop-blur-md">
+      {/* Mobile Menu Drawer */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-border/60 bg-background/95 backdrop-blur-md absolute w-full shadow-lg">
           <nav className="flex flex-col space-y-1 p-4">
-            {landingLinks.map((link) => (
-              <Link key={link.href} href={link.href} className={getMobileLandingLinkClass(link.href)} onClick={() => setMobileMenuOpen(false)}>
+            {(variant === 'landing' ? landingLinks : appMobileNavLinks).map((link) => (
+              <Link 
+                key={link.href} 
+                href={link.href} 
+                className={variant === 'landing' ? getMobileLandingLinkClass(link.href) : getMobileAppLinkClass(link.href)} 
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 {link.label}
               </Link>
             ))}
             <div className="pt-3 mt-2 border-t border-border/60">
-              <div className="space-y-2">
-                <Button variant="ghost" asChild className="w-full justify-start text-base font-medium text-foreground hover:bg-primary/5 hover:text-primary">
-                  <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
-                </Button>
-                <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-base">
-                  <Link href="/chat" onClick={() => setMobileMenuOpen(false)}>Get Started</Link>
-                </Button>
-              </div>
+              {variant === 'landing' ? (
+                <div className="space-y-2">
+                  <Button variant="outline" asChild className="w-full justify-start text-base font-medium text-foreground hover:bg-primary/5 hover:text-primary border-border hover:border-primary/50">
+                    <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
+                  </Button>
+                  <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-base rounded-lg">
+                    <Link href="/chat" onClick={() => setMobileMenuOpen(false)}>Get Started</Link>
+                  </Button>
+                </div>
+              ) : (
+                 <div className="space-y-1">
+                    <DropdownMenuItem asChild>
+                        <Link href="/" className={getMobileAppLinkClass('/') + " text-destructive hover:text-destructive"} onClick={() => setMobileMenuOpen(false)}><LogOut className="mr-2 h-4 w-4" /> Sign Out</Link>
+                    </DropdownMenuItem>
+                 </div>
+              )}
             </div>
-          </nav>
-        </div>
-      )}
-       {/* Mobile Menu Drawer for App (if main sidebar is collapsed/hidden - this is a fallback) */}
-       {/* Note: For app variant, the main sidebar becomes a drawer on mobile, so this specific mobile menu might be less critical or could be removed if the SidebarTrigger handles all mobile nav needs.
-           Keeping it for now as a potential fallback or for specific header actions not in the main sidebar. */}
-      {variant === 'app' && mobileMenuOpen && (
-        <div className="md:hidden border-t border-border/60 bg-background/95 backdrop-blur-md">
-          <nav className="flex flex-col space-y-1 p-4">
-            {appMobileNavLinks.map((link) => (
-              <Link key={link.href} href={link.href} className={getMobileAppLinkClass(link.href)} onClick={() => setMobileMenuOpen(false)}>
-                {link.label}
-              </Link>
-            ))}
-             <div className="pt-3 mt-2 border-t border-border/60">
-                <DropdownMenuItem asChild>
-                     {/* Assuming settings are part of dashboard or a dedicated page */}
-                    <Link href="/dashboard#settings" className={getMobileAppLinkClass('/dashboard#settings')} onClick={() => setMobileMenuOpen(false)}><Settings className="mr-2 h-4 w-4" /> Settings</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/" className={getMobileAppLinkClass('/')}  onClick={() => setMobileMenuOpen(false)}><LogOut className="mr-2 h-4 w-4" /> Sign Out</Link>
-                  </DropdownMenuItem>
-             </div>
           </nav>
         </div>
       )}
