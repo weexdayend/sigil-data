@@ -33,11 +33,11 @@ export function ChatMessage({ message, onSuggestionClick }: ChatMessageProps) {
   return (
     <div className={`flex items-start space-x-3 group ${isUser ? 'justify-end' : ''}`}>
       {!isUser && (
-        <span className="flex-shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-full bg-primary/20 text-primary">
+        <span className="flex-shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-full bg-muted text-muted-foreground">
           <IconComponent size={20} />
         </span>
       )}
-      <div className={`relative p-3 rounded-lg shadow max-w-[70%] ${
+      <div className={`relative p-3 rounded-xl shadow max-w-[70%] ${
           isUser
             ? 'bg-primary text-primary-foreground rounded-br-none'
             : 'bg-secondary text-secondary-foreground rounded-bl-none'
@@ -51,7 +51,7 @@ export function ChatMessage({ message, onSuggestionClick }: ChatMessageProps) {
                 key={index}
                 variant="outline"
                 size="sm"
-                className="w-full text-left justify-start bg-background/50 hover:bg-background"
+                className="w-full text-left justify-start bg-primary/10 hover:bg-primary/20 text-primary border-primary/20 text-xs rounded-lg px-3 py-1.5"
                 onClick={() => onSuggestionClick(suggestion)}
               >
                 {suggestion}
