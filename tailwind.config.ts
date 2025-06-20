@@ -9,19 +9,19 @@ export default {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    container: { 
+    container: {
       center: true,
       padding: {
         DEFAULT: '1rem',
         sm: '2rem',
-        lg: '3rem', // Slightly reduced for a bit more content width
+        lg: '3rem',
         xl: '4rem',
       },
     },
     extend: {
       fontFamily: {
         body: ['Inter', 'system-ui', 'sans-serif'],
-        headline: ['Inter', 'system-ui', 'sans-serif'], 
+        headline: ['Inter', 'system-ui', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {
@@ -77,11 +77,11 @@ export default {
         },
       },
       borderRadius: {
-        lg: 'var(--radius)', 
-        md: 'calc(var(--radius) - 0.25rem)', 
-        sm: 'calc(var(--radius) - 0.375rem)', 
-        xl: 'calc(var(--radius) + 0.25rem)', // Added for larger rounding
-        '2xl': 'calc(var(--radius) + 0.5rem)', // Added for even larger rounding
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 0.25rem)',
+        sm: 'calc(var(--radius) - 0.375rem)',
+        xl: 'calc(var(--radius) + 0.25rem)',
+        '2xl': 'calc(var(--radius) + 0.5rem)',
       },
       keyframes: {
         'accordion-down': {
@@ -92,7 +92,7 @@ export default {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
-        'blob': { 
+        'blob': {
           '0%': { transform: 'scale(1) translate(0px, 0px)' },
           '33%': { transform: 'scale(1.1) translate(30px, -20px)' },
           '66%': { transform: 'scale(0.9) translate(-20px, 30px)' },
@@ -124,33 +124,42 @@ export default {
         'subtle-scale': 'subtle-scale 0.3s ease-in-out',
         'pulse-glow': 'pulse-glow 2s infinite ease-out',
       },
-      boxShadow: { 
+      boxShadow: {
         'soft': '0 4px 12px hsla(var(--primary)/0.05), 0 2px 6px hsla(var(--primary)/0.08)',
         'medium': '0 8px 16px hsla(var(--primary)/0.07), 0 4px 8px hsla(var(--primary)/0.1)',
         'hard': '0 12px 24px hsla(var(--primary)/0.1), 0 6px 12px hsla(var(--primary)/0.12)',
         'primary-glow': '0 0 15px hsla(var(--primary)/0.5), 0 0 30px hsla(var(--primary)/0.3)',
         'accent-glow': '0 0 15px hsla(var(--accent)/0.5), 0 0 30px hsla(var(--accent)/0.3)',
       },
-      typography: (theme: (arg0: string) => any) => ({ 
+      typography: (theme: (arg0: string) => any) => ({
         DEFAULT: {
           css: {
-            color: theme('colors.foreground'),
-            a: {
-              color: theme('colors.primary.DEFAULT'),
-              '&:hover': {
-                color: theme('colors.primary.DEFAULT'),
-                opacity: 0.8,
-              },
+            '--tw-prose-body': 'hsl(var(--foreground))',
+            '--tw-prose-headings': 'hsl(var(--foreground))',
+            '--tw-prose-lead': 'hsl(var(--muted-foreground))',
+            '--tw-prose-links': 'hsl(var(--primary))',
+            '--tw-prose-bold': 'hsl(var(--foreground))',
+            '--tw-prose-counters': 'hsl(var(--muted-foreground))',
+            '--tw-prose-bullets': 'hsl(var(--border))',
+            '--tw-prose-hr': 'hsl(var(--border))',
+            '--tw-prose-quotes': 'hsl(var(--foreground))',
+            '--tw-prose-quote-borders': 'hsl(var(--border))',
+            '--tw-prose-captions': 'hsl(var(--muted-foreground))',
+            '--tw-prose-code': 'hsl(var(--accent-foreground))',
+            '--tw-prose-pre-code': 'hsl(var(--accent-foreground))',
+            '--tw-prose-pre-bg': 'hsl(var(--accent) / 0.15)', // Slightly increased opacity for pre background
+            '--tw-prose-th-borders': 'hsl(var(--border))',
+            '--tw-prose-td-borders': 'hsl(var(--border))',
+            // Ensure inline code also uses a background for clarity, if desired,
+            // by styling the <code> tag directly, but usually --tw-prose-code handles text color.
+            // The plugin typically applies background to <pre><code> not inline <code> by default via --tw-prose-pre-bg.
+            // If inline code needs a background, it might be better to customize the plugin's output or add specific CSS.
+            // For now, relying on the prose variables.
+            'code::before': {
+              content: 'none',
             },
-            h1: { color: theme('colors.foreground')},
-            h2: { color: theme('colors.foreground')},
-            h3: { color: theme('colors.foreground')},
-            h4: { color: theme('colors.foreground')},
-            strong: { color: theme('colors.foreground')},
-            code: { color: theme('colors.accent.DEFAULT'), backgroundColor: theme('colors.accent.DEFAULT')+'20', padding: '0.2em 0.4em', borderRadius: '0.25rem' },
-            blockquote: {
-              color: theme('colors.muted.foreground'),
-              borderLeftColor: theme('colors.border'),
+            'code::after': {
+              content: 'none',
             },
           },
         },
@@ -159,3 +168,5 @@ export default {
   },
   plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
 } satisfies Config;
+
+    
